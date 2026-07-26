@@ -42,7 +42,7 @@ class YtDlp:
             f"res:{min(video_parameters.width, video_parameters.height)}",
             "--no-warnings",
             "--cookies",
-            "/root/starbot/storage/cookies/youtube/cookies.txt",
+            "/root/cookies/youtube/cookies.txt",
             "--geo-bypass",
             "--geo-bypass-country",
             "ID",
