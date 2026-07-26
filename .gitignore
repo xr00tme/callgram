@@ -1,0 +1,14 @@
+*.egg-info
+.env
+.env.test
+.mypy_cache/
+.idea/
+package-lock.json
+__pycache__/
+dist/
+build/
+node_modules/
+venv/
+tests/
+env/
+lib/
