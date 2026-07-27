@@ -33,33 +33,44 @@ class YtDlp:
         if not link:
             return None, None
 
+        res_limit = min(video_parameters.width, video_parameters.height) if video_parameters else 360
+
+        user_agent = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1"
+    
+        cookies_path = "/root/cookies/youtube/cookies.txt"
+    
         commands = [
-            "yt-dlp",
-            "-g",
-            "-f",
-            "bestvideo[vcodec~='(vp09|avc1)']+m4a/best",
-            "-S",
-            f"res:{min(video_parameters.width, video_parameters.height)}",
-            "--no-warnings",
-            "--cookies",
-            "/root/cookies/youtube/cookies.txt",
-            "--geo-bypass",
-            "--geo-bypass-country",
-            "ID",
-            "--no-check-certificate",
+            'yt-dlp',
+            '-g',
+            '-f', "bestvideo[vcodec~='(vp09|avc1)']+m4a/bestaudio[ext=m4a]/best",
+            '-S', f'res:{res_limit}',
+            '--no-warnings',
+            '--no-check-certificate',
+            '--socket-timeout', '15',
+            '--retries', '3',
+            '--user-agent', user_agent,
+            '--cookies', cookies_path,
+            '--geo-bypass',
+            '--geo-bypass-country', 'ID'
         ]
 
+
         if add_commands:
-            commands += await cleanup_commands(
-                shlex.split(add_commands),
-                "yt-dlp",
-                [
-                    "-f",
-                    "-g",
-                    "--no-warnings",
-                    "--cookies",
-                ],
-            )
+            try:
+                additional_args = shlex.split(add_commands)
+                skip_next = False
+                for arg in additional_args:
+                    if skip_next:
+                        skip_next = False
+                        continue
+                    if arg in ["--cookies", "-f", "-g", "--no-warnings"]:
+                        skip_next = True
+                        continue
+                    if arg not in commands:
+                        commands.append(arg)
+            except Exception:
+                pass
+
 
         commands.append(link)
 
@@ -74,7 +85,7 @@ class YtDlp:
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     text=True,
-                    timeout=30,
+                    timeout=35,
                 ),
             )
 
