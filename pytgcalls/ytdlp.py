@@ -51,7 +51,7 @@ class YtDlp:
             '--user-agent', user_agent,
             '--cookies', cookies_path,
             '--geo-bypass',
-            '--geo-bypass-country', 'ID'
+            '--geo-bypass-country', 'ID',
             '--remote-components', 'ejs:github',
             '--extractor-args', 'youtube:skip=dash,hls;youtubetab:skip=authcheck',
             '--limit-rate', '5M'
