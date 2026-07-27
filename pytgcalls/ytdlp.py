@@ -42,7 +42,7 @@ class YtDlp:
         commands = [
             'yt-dlp',
             '-g',
-            '-f', "bestvideo[vcodec~='(vp09|avc1)']+m4a/bestaudio[ext=m4a]/best",
+            '-f', "bestvideo[vcodec~='(vp09|avc1)']+m4a/bestaudio[ext=m4a]/bestaudio/best",
             '-S', f'res:{res_limit}',
             '--no-warnings',
             '--no-check-certificate',
@@ -53,7 +53,6 @@ class YtDlp:
             '--geo-bypass',
             '--geo-bypass-country', 'ID'
         ]
-
 
         if add_commands:
             try:
@@ -70,7 +69,6 @@ class YtDlp:
                         commands.append(arg)
             except Exception:
                 pass
-
 
         commands.append(link)
 
